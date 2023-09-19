@@ -18,11 +18,11 @@ using namespace std;
 #endif
 
 #ifdef __APPLE__
-#include <GLUT/glut.h>
+#include <glut.h>
 #endif
 
 #ifdef __linux__
-#include <GL/glut.h>
+#include <GL/glut.h> //tem que mexer aqui, acho q ta errado
 #endif
 
 #include "Ponto.h"

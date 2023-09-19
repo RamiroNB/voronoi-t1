@@ -11,9 +11,11 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 using namespace std;
 
 #include "Poligono.h"
+#include "Envelope.h"
 
 
 class Voronoi
@@ -21,13 +23,17 @@ class Voronoi
     Poligono Diagrama[1000];
     unsigned int qtdDePoligonos;
     Ponto Min, Max;
+
 public:
+    vector<int> envelopes;
+
     Voronoi();
     Poligono LeUmPoligono();
     void LePoligonos(const char *nome);
     Poligono getPoligono(int i);
     void obtemLimites(Ponto &min, Ponto &max);
     unsigned int getNPoligonos();
+    vector<Envelope> Voronoi::getEnvelopesInterseccao(Ponto p);
 };
 
 #endif /* DiagramaVoronoi_h */
