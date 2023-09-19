@@ -25,7 +25,7 @@ class Voronoi
     Ponto Min, Max;
 
 public:
-    vector<int> envelopes;
+    vector<Envelope> envelopes;
 
     Voronoi();
     Poligono LeUmPoligono();
@@ -33,7 +33,7 @@ public:
     Poligono getPoligono(int i);
     void obtemLimites(Ponto &min, Ponto &max);
     unsigned int getNPoligonos();
-    vector<Envelope> Voronoi::getEnvelopesInterseccao(Ponto p);
+    vector<int> getEnvelopesInterseccao(Ponto p);
 };
 
 #endif /* DiagramaVoronoi_h */

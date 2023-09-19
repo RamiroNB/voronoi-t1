@@ -115,7 +115,7 @@ vector<int> Voronoi::getEnvelopesInterseccao(Ponto p) {
 
 
 // TEM QUE SALVAR AS ARESTAS!!!!!
-// 
+
 
 // agora com os envelopes, tem que ver que poligonos que se encontram naqueles envelopes
 //sabendo que poligonos estao dentro do envelope, tem que testar ver se ta dentro do poligono
