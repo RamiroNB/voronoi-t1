@@ -113,7 +113,7 @@ void init()
     Voro.LePoligonos("ListaDePoligonos-V2.txt");
     Voro.obtemLimites(Min, Max);
     // aqui o metodo dos vizinhos
-    //Voro.obtemVizinhosDasArestas();
+    // Voro.obtemVizinhosDasArestas();
     Min.imprime("Minimo:", "\n");
     Max.imprime("Maximo:", "\n");
 
@@ -130,7 +130,7 @@ void init()
     Min = Min - Largura * 0.1;
     Max = Max + Largura * 0.1;
 
-    p1 = Ponto(1,1);
+    p1 = Ponto(1, 1);
 }
 
 double nFrames = 0;
@@ -183,11 +183,12 @@ void reshape(int w, int h)
 // **********************************************************************
 //
 // **********************************************************************
-void desenhaTriangulo() {
+void desenhaTriangulo()
+{
     glBegin(GL_TRIANGLES);
-        glVertex2f(p1.x,p1.y);
-        glVertex2f(p1.x+1,p1.y);
-        glVertex2f(p1.x+0.5,p1.y+1);
+    glVertex2f(p1.x, p1.y);
+    glVertex2f(p1.x + 1, p1.y);
+    glVertex2f(p1.x + 0.5, p1.y + 1);
     glEnd();
 }
 // **********************************************************************
@@ -280,7 +281,6 @@ void display(void)
         Esq = PontoClicado + Dir * (1000);
         // glColor3f(0, 1, 0); // R, G, B  [0..1]
         DesenhaLinha(PontoClicado, Esq);
-
     }
 
     // Mapa.desenhaVertices();
@@ -332,15 +332,19 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'w':
         p1.y += 0.1;
+        cout << "\n\nPoligono: " << Voro.TaDentroConvexo(p1) << endl;
         break;
     case 'a':
         p1.x -= 0.1;
+        cout << "\n\nPoligono: " << Voro.TaDentroConvexo(p1) << endl;
         break;
     case 's':
         p1.y -= 0.1;
+        cout << "\n\nPoligono: " << Voro.TaDentroConvexo(p1) << endl;
         break;
     case 'd':
         p1.x += 0.1;
+        cout << "\n\nPoligono: " << Voro.TaDentroConvexo(p1) << endl;
         break;
     default:
         break;
