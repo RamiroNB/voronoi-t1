@@ -28,7 +28,7 @@ void Ponto::imprime() {
 }
 void Ponto::imprime(char const *msg)
 {
-    cout << msg;
+    cout << msg << endl;
     imprime();
 }
 void Ponto::imprime(char const *msgAntes, char const *msgDepois)

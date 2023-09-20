@@ -25,6 +25,7 @@ class Voronoi
     Ponto Min, Max;
 
 public:
+    int contadorProdVetorial = 0;
     vector<Envelope> envelopes;
 
     Voronoi();
@@ -34,6 +35,11 @@ public:
     void obtemLimites(Ponto &min, Ponto &max);
     unsigned int getNPoligonos();
     vector<int> getEnvelopesInterseccao(Ponto p);
+    double ProdVetorial(Ponto& p1, Ponto& p2);
+    int TaDentroConvexo(Ponto P);
+    void imprimeNumerosEnvelopes(vector<int> envelopesClicados);
+    void imprimeEnvelopes();
+
 };
 
 #endif /* DiagramaVoronoi_h */

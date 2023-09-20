@@ -393,6 +393,7 @@ void Mouse(int button, int state, int x, int y)
     gluUnProject(wx, wy, wz, modelview, projection, viewport, &ox, &oy, &oz);
     PontoClicado = Ponto(ox, oy, oz);
     PontoClicado.imprime("- Ponto no universo: ", "\n");
+    cout << "\n\nPoligono: " << Voro.TaDentroConvexo(PontoClicado) << endl;
     FoiClicado = true;
 }
 

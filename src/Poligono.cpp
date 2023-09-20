@@ -17,7 +17,7 @@ Poligono::Poligono()
 
 void Poligono::insereVertice(Ponto p)
 {
-    Vertices.push_back(p);
+    Vertices.push_back(p);    
 }
 
 void Poligono::insereVertice(Ponto p, int pos)
