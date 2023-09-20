@@ -184,6 +184,7 @@ void Voronoi::imprimeEnvelopes() {
 // convexo: precisa salvas as arestas, pegar as arestas de cada poligono da lista pegada pelo metodo acima
 //          ai dps tem que ver se o ponto ta dentro do poligono vendo se ta no mesmo lado em relacao a todas as arestas do poligono (prod vetorial???)
 //          essa chamada ai com cada poligono vai ser contabilizada, por isso q so se testa com os poligonos da lista que tao no envelope (metodo acima)
+// FEITO
 
 // concavo: faz aquela linha bem pra esquerda (ja tem uma demonstracao no mouse quando clica na tela (metodo: mouse))
 //          depois, com essa linha tem que contar a quantidade de intersecção com as arestas dos poligonos que ele enconsta (so testar com os poligonos q ele enconsta = mesmo y?)
@@ -195,16 +196,5 @@ void Voronoi::imprimeEnvelopes() {
 // vizinhos: ????
 
 
+// TEM QUE SALVAR AS ARESTAS!!!!! -- salvar as duplas de pontos, ja tem o metodo pra pegar esses pontos
 
-
-
-// TEM QUE SALVAR AS ARESTAS!!!!!
-
-
-// agora com os envelopes, tem que ver que poligonos que se encontram naqueles envelopes
-//sabendo que poligonos estao dentro do envelope, tem que testar ver se ta dentro do poligono
-// usando os vertices do poligono -- acho que ta guardado no coisa dele
-// -------------
-// envelope = quadradao em volta do poigonon, altura e largura apenas
-// --------------
-// agora acho que talvez ir de evenlope em envelope (ou posicao do poligono é o mesmo do envelope) -> acha o numero do envelope, sabe qual o poligono?

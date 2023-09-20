@@ -185,10 +185,14 @@ void reshape(int w, int h)
 // **********************************************************************
 void desenhaTriangulo()
 {
-    glBegin(GL_TRIANGLES);
-    glVertex2f(p1.x, p1.y);
-    glVertex2f(p1.x + 1, p1.y);
-    glVertex2f(p1.x + 0.5, p1.y + 1);
+    // glBegin(GL_TRIANGLES);
+    // glVertex2f(p1.x, p1.y);
+    // glVertex2f(p1.x + 1, p1.y);
+    // glVertex2f(p1.x + 0.5, p1.y + 1);
+    // glEnd();
+    glPointSize(5);
+    glBegin(GL_POINTS);
+        glVertex3f(p1.x, p1.y, p1.z);
     glEnd();
 }
 // **********************************************************************
