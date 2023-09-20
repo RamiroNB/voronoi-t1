@@ -164,8 +164,108 @@ int Voronoi::TaDentroConvexo(Ponto p) {
     return -1;
 } //falta alterar para ao inves do click do mouse, usar um ponto com as setas
 
+bool Voronoi::HaIntersecao(Ponto p1, Ponto p2, Ponto q1, Ponto q2){ 
+    double s, t;
+
+    // if (intersec2d(p1, teste, q1, q2, s, t) == 1) {
+    //     return true;
+    // } else {
+    //     return false;
+    // }
 
 
+    return true;
+}
+
+bool exists(vector<int> vetor, int n) {
+    for (int i = 0; i < vetor.size(); i++) {
+        if (vetor[i] == n)
+            return true;
+    }
+    return false;
+}
+
+void encontrarMinimoMaximoLocal(Poligono polig, int& minimoLocal, int& maximoLocal) {
+    
+    int n = polig.getNVertices();
+
+    for (int i = 0; i < n; i++) {
+        int ant = (i + n - 1) % n;
+        int prox = (i + 1) % n;
+
+        Ponto anterior = polig.getVertice(ant);
+        Ponto proximo = polig.getVertice(prox);
+        Ponto atual = polig.getVertice(i);
+
+        if (atual.y < anterior.y && atual.y < proximo.y) {
+            minimoLocal = atual.y;
+        }
+
+        if (atual.y > anterior.y && atual.y > proximo.y) {
+            maximoLocal = atual.y;
+        }
+    }
+}
+
+int Voronoi::TaDentroConcavo(Ponto p){
+    Ponto Dir(-1, 0);
+    Ponto teste = p + Dir * (1000); // a partir do ponto reta pra esquerda pra analise
+    // teste.imprime();
+    //q1 e q2 ? de quem? pegar poligono certo
+
+    // envelopes que cruzem a linha horizontal tracada
+    Ponto aux;
+    vector<int> envelopesParaAnalise;
+    for (int i=0; i>-1000; i--) {
+        aux = Ponto(i + p.x, p.y, 0);
+
+        vector<int> envelopesNoPonto = getEnvelopesInterseccao(aux);
+        if (envelopesNoPonto.size() == 0) {
+            break;
+        }
+        if (envelopesNoPonto.size() == 1) {
+            return envelopesNoPonto[0]; // se tem so um, ta bem na ponta, a gente ja sabe qual q é
+        }
+
+        for (int j=0; j<envelopesNoPonto.size(); j++) {
+            if (!exists(envelopesParaAnalise, envelopesNoPonto[j])) {
+                envelopesParaAnalise.push_back(envelopesNoPonto[j]);
+            }
+        }
+    }
+
+    // analisar somente os q o envelope é cruzado pela linha
+    Ponto verticeAtual, proximoVertice;
+    for (int i=0; i<envelopesParaAnalise.size(); i++) {
+        Poligono polig = Diagrama[envelopesParaAnalise[i]];
+
+        int minimoLocal, maximoLocal;
+        encontrarMinimoMaximoLocal(polig, minimoLocal, maximoLocal);
+
+        // se o y for o y max ou minlocal, par = dentro, impar = fora
+        
+        // agora qq tem que fazer:
+        // 1 - ir em cada aresta do poligono, e ir passando pra funcao ali de baixo
+        // 2 - se der interseccao, contabilizar em um contador
+        // no final da analise do poligono inteiro, tem que ver se o contador é par ou impar
+        // dependendo sempre do min e max local (a logica pode mudar)
+        // caso for impar ou par (dependendo da logica) ja retorna o poligono que se encontra para parar a analise
+    }
+
+    // HaIntersecao(p1, teste, q1, q2);
+}
+
+// k e l = uma reta
+// m e n = outra reta
+// s e t = parametros da intersecção, nao precisa enviar
+int Voronoi::intersec2d (Ponto k, Ponto l, Ponto m, Ponto n, double &s, double &t)
+{
+    double det = (n.x - m.x) * (l.y - k.y) - (n.y - m.y) * (l.x - k.x);
+    if (det == 0.0) return 0 ; // não há intersecção
+    s = ((n.x - m.x) * (m.y - k.y) - (n.y - m.y) * (m.x - k.x))/ det ;
+    t = ((l.x - k.x) * (m.y - k.y) - (l.y - k.y) * (m.x - k.x))/ det ;
+    return 1; // há intersecção
+}
 
 
 void Voronoi::imprimeNumerosEnvelopes(vector<int> envelopesClicados) {
