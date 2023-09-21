@@ -164,17 +164,18 @@ int Voronoi::TaDentroConvexo(Ponto p) {
     return -1;
 } //falta alterar para ao inves do click do mouse, usar um ponto com as setas
 
-bool Voronoi::HaIntersecao(Ponto p1, Ponto p2, Ponto q1, Ponto q2){ 
+
+
+
+
+
+
+bool Voronoi::HaIntersecao(Ponto p1, Ponto p2, Ponto q1, Ponto q2){  // mesclar com intersec2d
     double s, t;
-
-    // if (intersec2d(p1, teste, q1, q2, s, t) == 1) {
-    //     return true;
-    // } else {
-    //     return false;
-    // }
-
-
-    return true;
+    if (intersec2d(p1, p2, q1, q2, s, t) == 1) {
+        return true;
+    }
+    return false;
 }
 
 bool exists(vector<int> vetor, int n) {
@@ -213,6 +214,7 @@ int Voronoi::TaDentroConcavo(Ponto p){
     // teste.imprime();
     //q1 e q2 ? de quem? pegar poligono certo
 
+    // metodo separado?
     // envelopes que cruzem a linha horizontal tracada
     Ponto aux;
     vector<int> envelopesParaAnalise;
@@ -234,16 +236,43 @@ int Voronoi::TaDentroConcavo(Ponto p){
         }
     }
 
+    // metodo separado?
     // analisar somente os q o envelope é cruzado pela linha
-    Ponto verticeAtual, proximoVertice;
+    int interseccoes;
+    bool taNoMinMax = false
+    Ponto p1, p2;
     for (int i=0; i<envelopesParaAnalise.size(); i++) {
         Poligono polig = Diagrama[envelopesParaAnalise[i]];
+        interseccoes = 0;
 
         int minimoLocal, maximoLocal;
         encontrarMinimoMaximoLocal(polig, minimoLocal, maximoLocal);
+        if (teste.y == minimoLocal || teste.y == maximoLocal) {
+            taNoMinMax = true;
+        }
 
         // se o y for o y max ou minlocal, par = dentro, impar = fora
-        
+        //(n + 1) % Vertices.size();
+        int n = polig.getNVertices();
+        for (int j=0; j<n; j++) {
+            p1 = polig.getVertice(j);
+            p2 = polig.getVertice((j+1) % n);
+
+            if (HaIntersecao(p, teste, p1, p2)) {
+                interseccoes++;
+            }
+        }
+
+        if (taNoMinMax) {
+            if (interseccoes % 2 == 0) {
+                return envelopesParaAnalise[i];
+            }
+        } else {
+            if (interseccoes % 2 != 0) {
+                return envelopesParaAnalise[i];
+            }
+        }
+
         // agora qq tem que fazer:
         // 1 - ir em cada aresta do poligono, e ir passando pra funcao ali de baixo
         // 2 - se der interseccao, contabilizar em um contador
@@ -252,13 +281,14 @@ int Voronoi::TaDentroConcavo(Ponto p){
         // caso for impar ou par (dependendo da logica) ja retorna o poligono que se encontra para parar a analise
     }
 
+
     // HaIntersecao(p1, teste, q1, q2);
 }
 
 // k e l = uma reta
 // m e n = outra reta
 // s e t = parametros da intersecção, nao precisa enviar
-int Voronoi::intersec2d (Ponto k, Ponto l, Ponto m, Ponto n, double &s, double &t)
+int Voronoi::intersec2d (Ponto k, Ponto l, Ponto m, Ponto n, double &s, double &t) //dava pra colocar isos dentro de HaInterseccao
 {
     double det = (n.x - m.x) * (l.y - k.y) - (n.y - m.y) * (l.x - k.x);
     if (det == 0.0) return 0 ; // não há intersecção
