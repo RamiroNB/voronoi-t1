@@ -288,7 +288,7 @@ void display(void)
     }
 
     // Voro.HaIntersecao(PontoClicado);
-    Voro.TaDentroConcavo(PontoClicado);
+    // Voro.TaDentroConvexo(PontoClicado);
 
     // Mapa.desenhaVertices();
     // glColor3f(1,0,0); // R, G, B  [0..1]
@@ -339,19 +339,23 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'w':
         p1.y += 0.1;
-        cout << "\n\nPoligono: " << Voro.TaDentroConvexo(p1) << endl;
+        cout << "\n\nConvexo: " << Voro.TaDentroConvexo(p1) << endl;
+        cout << "\n\nConcavo: " << Voro.TaDentroConcavo(p1) << endl;
         break;
     case 'a':
         p1.x -= 0.1;
-        cout << "\n\nPoligono: " << Voro.TaDentroConvexo(p1) << endl;
+        cout << "\n\nConvexo: " << Voro.TaDentroConvexo(p1) << endl;
+        cout << "\n\nConcavo: " << Voro.TaDentroConcavo(p1) << endl;
         break;
     case 's':
         p1.y -= 0.1;
-        cout << "\n\nPoligono: " << Voro.TaDentroConvexo(p1) << endl;
+        cout << "\n\nConvexo: " << Voro.TaDentroConvexo(p1) << endl;
+        cout << "\n\nConcavo: " << Voro.TaDentroConcavo(p1) << endl;
         break;
     case 'd':
         p1.x += 0.1;
-        cout << "\n\nPoligono: " << Voro.TaDentroConvexo(p1) << endl;
+        cout << "\n\nConvexo: " << Voro.TaDentroConvexo(p1) << endl;
+        cout << "\n\nConcavo: " << Voro.TaDentroConcavo(p1) << endl;
         break;
     default:
         break;
@@ -404,7 +408,9 @@ void Mouse(int button, int state, int x, int y)
     gluUnProject(wx, wy, wz, modelview, projection, viewport, &ox, &oy, &oz);
     PontoClicado = Ponto(ox, oy, oz);
     PontoClicado.imprime("- Ponto no universo: ", "\n");
-    cout << "\n\nPoligono: " << Voro.TaDentroConvexo(PontoClicado) << endl;
+    // cout << "\n\nPoligono: " << Voro.TaDentroConvexo(PontoClicado) << endl;
+    // cout << "\n\nPoligono: " << Voro.TaDentroConcavo(PontoClicado) << endl;
+
     FoiClicado = true;
 }
 

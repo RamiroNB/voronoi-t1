@@ -26,6 +26,7 @@ class Voronoi
 
 public:
     int contadorProdVetorial = 0;
+    int contadorHaInterseccao = 0;
     vector<Envelope> envelopes;
 
     Voronoi();
@@ -37,11 +38,9 @@ public:
     vector<int> getEnvelopesInterseccao(Ponto p);
     double ProdVetorial(Ponto& p1, Ponto& p2);
     int TaDentroConvexo(Ponto P);
-    bool HaIntersecao(Ponto p1, Ponto p2, Ponto q1, Ponto q2); // receber aresta?
     int TaDentroConcavo(Ponto p);
     void imprimeNumerosEnvelopes(vector<int> envelopesClicados);
     void imprimeEnvelopes();
-    int intersec2d(Ponto k, Ponto l, Ponto m, Ponto n, double& s, double& t);
 
 };
 
