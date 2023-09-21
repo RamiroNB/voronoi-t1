@@ -17,7 +17,6 @@ using namespace std;
 #include "Poligono.h"
 #include "Envelope.h"
 
-
 class Voronoi
 {
     Poligono Diagrama[1000];
@@ -35,14 +34,12 @@ public:
     void obtemLimites(Ponto &min, Ponto &max);
     unsigned int getNPoligonos();
     vector<int> getEnvelopesInterseccao(Ponto p);
-    double ProdVetorial(Ponto& p1, Ponto& p2);
+    double ProdVetorial(Ponto &p1, Ponto &p2);
     int TaDentroConvexo(Ponto P);
-    bool HaIntersecao(Ponto p1, Ponto p2, Ponto q1, Ponto q2); // receber aresta?
     int TaDentroConcavo(Ponto p);
     void imprimeNumerosEnvelopes(vector<int> envelopesClicados);
     void imprimeEnvelopes();
-    int intersec2d(Ponto k, Ponto l, Ponto m, Ponto n, double& s, double& t);
-
+    int intersec2d(Ponto k, Ponto l, Ponto m, Ponto n, double &s, double &t);
 };
 
 #endif /* DiagramaVoronoi_h */

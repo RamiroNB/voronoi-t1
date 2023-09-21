@@ -192,7 +192,7 @@ void desenhaTriangulo()
     // glEnd();
     glPointSize(5);
     glBegin(GL_POINTS);
-        glVertex3f(p1.x, p1.y, p1.z);
+    glVertex3f(p1.x, p1.y, p1.z);
     glEnd();
 }
 // **********************************************************************
@@ -284,11 +284,11 @@ void display(void)
         Ponto Dir(-1, 0);
         Esq = PontoClicado + Dir * (1000);
         // glColor3f(0, 1, 0); // R, G, B  [0..1]
-        // DesenhaLinha(PontoClicado, Esq);
+        DesenhaLinha(PontoClicado, Esq);
+        // Voro.TaDentroConcavo(PontoClicado);
     }
 
     // Voro.HaIntersecao(PontoClicado);
-    Voro.TaDentroConcavo(PontoClicado);
 
     // Mapa.desenhaVertices();
     // glColor3f(1,0,0); // R, G, B  [0..1]
@@ -321,7 +321,7 @@ void ContaTempo(double tempo)
         }
     }
 }
-// **********************************************************************   
+// **********************************************************************
 //  void keyboard ( unsigned char key, int x, int y )
 // **********************************************************************
 void keyboard(unsigned char key, int x, int y)
@@ -405,6 +405,7 @@ void Mouse(int button, int state, int x, int y)
     PontoClicado = Ponto(ox, oy, oz);
     PontoClicado.imprime("- Ponto no universo: ", "\n");
     cout << "\n\nPoligono: " << Voro.TaDentroConvexo(PontoClicado) << endl;
+    cout << "Tadentro concavo: " << Voro.TaDentroConcavo(PontoClicado) << endl;
     FoiClicado = true;
 }
 

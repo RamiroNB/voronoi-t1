@@ -1,10 +1,4 @@
-//
-//  DiagramaVoronoi.cpp
-//  OpenGLTest
-//
-//  Created by Márcio Sarroglia Pinho on 23/08/23.
-//  Copyright © 2023 Márcio Sarroglia Pinho. All rights reserved.
-//
+
 
 #include "DiagramaVoronoi.h"
 
@@ -49,21 +43,20 @@ void Voronoi::LePoligonos(const char *nome)
     cout << "qtdDePoligonos:" << qtdDePoligonos << endl;
     Ponto A, B;
     Diagrama[0] = LeUmPoligono();
-    Diagrama[0].obtemLimites(Min, Max); // obtem o envelope do poligono
-    envelopes.push_back(Envelope(Min, Max));  // cria o envelope do poligono (para colisao)
+    Diagrama[0].obtemLimites(Min, Max);      // obtem o envelope do poligono
+    envelopes.push_back(Envelope(Min, Max)); // cria o envelope do poligono (para colisao)
 
     for (int i = 1; i < qtdDePoligonos; i++)
     {
         Diagrama[i] = LeUmPoligono();
-        Diagrama[i].obtemLimites(A, B); // obtem o envelope do poligono
-        envelopes.push_back(Envelope(A, B));  // cria o envelope do poligono (para colisao)
+        Diagrama[i].obtemLimites(A, B);      // obtem o envelope do poligono
+        envelopes.push_back(Envelope(A, B)); // cria o envelope do poligono (para colisao)
 
         Min = ObtemMinimo(A, Min);
         Max = ObtemMaximo(B, Max);
     }
     cout << "Lista de Poligonos lida com sucesso!" << endl;
     cout << "Imprimindo envelopes..." << endl;
-    
 }
 
 Poligono Voronoi::getPoligono(int i)
@@ -85,231 +78,191 @@ void Voronoi::obtemLimites(Ponto &min, Ponto &max)
     max = this->Max;
 }
 
-
-vector<int> Voronoi::getEnvelopesInterseccao(Ponto p) {
+vector<int> Voronoi::getEnvelopesInterseccao(Ponto p)
+{
     vector<int> envelopesClicados;
-    for (int i=0; i<envelopes.size(); i++) {
-        if (envelopes[i].pontoEstaDentro(p)) {
+    for (int i = 0; i < envelopes.size(); i++)
+    {
+        if (envelopes[i].pontoEstaDentro(p))
+        {
             envelopesClicados.push_back(i); // como checar se ta certo?
         }
     }
     return envelopesClicados;
-} //salvar o numero do envelope, ai a gente sabe os poligonos
+} // salvar o numero do envelope, ai a gente sabe os poligonos
 
-double Voronoi::ProdVetorial(Ponto& p1, Ponto& p2) { //adicionar o contador aqui
+double Voronoi::ProdVetorial(Ponto &p1, Ponto &p2)
+{ // adicionar o contador aqui
     contadorProdVetorial++;
-    return p1.x*p2.y - p1.y*p2.x;
+    return p1.x * p2.y - p1.y * p2.x;
 }
 
-int Voronoi::TaDentroConvexo(Ponto p) {
+int Voronoi::TaDentroConvexo(Ponto p)
+{
     contadorProdVetorial = 0;
     vector<int> envelopesClicados = getEnvelopesInterseccao(p);
 
-    if (envelopesClicados.size() == 1) {
-        cout << "ContadorProdVetorial: " << contadorProdVetorial << "\n" << endl;
+    if (envelopesClicados.size() == 1)
+    {
+        cout << "ContadorProdVetorial: " << contadorProdVetorial << "\n"
+             << endl;
         return envelopesClicados[0];
-    } 
+    }
 
     Ponto p1, p2;
     double prodVetorial;
 
-    for (int i=0; i<envelopesClicados.size(); i++) {
-        Poligono poligonoAtual = Diagrama[envelopesClicados[i]]; // aqui tava o problema = tava pegando sempre os primeiros na lista
-        //tipo, a quantidade de envelopes clicados é 2, ai ele pega o 0 e o 1, mas o 0 e o 1 nao sao os que estao dentro do envelope
-        // antes tava Diagrama[i] ao inves de envelopesClicados[i]
-        
+    for (int i = 0; i < envelopesClicados.size(); i++)
+    {
+        Poligono poligonoAtual = Diagrama[envelopesClicados[i]];
+
         int nVertices = poligonoAtual.getNVertices();
 
         bool dentro = true;
         bool positivo = true;
         vector<double> produtos;
 
-        for (int j=0; j<nVertices; j++)  {
-            poligonoAtual.getAresta(j, p1, p2); //pegar a aresta do poligono (pegar os vertices do poligono
+        for (int j = 0; j < nVertices; j++)
+        {
+            poligonoAtual.getAresta(j, p1, p2); // pegar a aresta do poligono (pegar os vertices do poligono
             Ponto vec1 = Ponto(p2.x - p1.x, p2.y - p1.y, 0);
-            Ponto vec2 = Ponto(p.x - p1.x, p.y - p1.y, 0); 
-            
+            Ponto vec2 = Ponto(p.x - p1.x, p.y - p1.y, 0);
+
             prodVetorial = ProdVetorial(vec1, vec2);
-            if (j == 0) { // primeiro prod calculado
-                if (prodVetorial >= 0) { // ele determina como os outros devem ser
+            if (j == 0)
+            { // primeiro prod calculado
+                if (prodVetorial >= 0)
+                { // ele determina como os outros devem ser
                     positivo = true;
-                } else {
+                }
+                else
+                {
                     positivo = false;
                 }
-            } else {
-                if (positivo) { // caso o primeiro for positivo, todos os outros tem que ser positivo
-                    if (prodVetorial < 0) {
+            }
+            else
+            {
+                if (positivo)
+                { // caso o primeiro for positivo, todos os outros tem que ser positivo
+                    if (prodVetorial < 0)
+                    {
                         dentro = false;
-                        break; //achou negativo, para e vai pro proximo
-                    } else {
+                        break; // achou negativo, para e vai pro proximo
+                    }
+                    else
+                    {
                         dentro = true;
                     }
-                } else {
-                    if (prodVetorial >= 0) {
+                }
+                else
+                {
+                    if (prodVetorial >= 0)
+                    {
                         dentro = false;
                         break;
-                    } else {
+                    }
+                    else
+                    {
                         dentro = true;
                     }
                 }
             }
         }
 
-        if (dentro) {
-            cout << "ContadorProdVetorial: " << contadorProdVetorial << "\n" << endl;
+        if (dentro)
+        {
+            cout << "ContadorProdVetorial: " << contadorProdVetorial << "\n"
+                 << endl;
             return envelopesClicados[i];
         }
-        
     }
     return -1;
-} //falta alterar para ao inves do click do mouse, usar um ponto com as setas
+} // falta alterar para ao inves do click do mouse, usar um ponto com as setas
 
-
-
-
-
-
-
-bool Voronoi::HaIntersecao(Ponto p1, Ponto p2, Ponto q1, Ponto q2){  // mesclar com intersec2d
-    double s, t;
-    if (intersec2d(p1, p2, q1, q2, s, t) == 1) {
-        return true;
-    }
-    return false;
-}
-
-bool exists(vector<int> vetor, int n) {
-    for (int i = 0; i < vetor.size(); i++) {
+bool exists(vector<int> vetor, int n)
+{
+    for (int i = 0; i < vetor.size(); i++)
+    {
         if (vetor[i] == n)
             return true;
     }
     return false;
 }
 
-void encontrarMinimoMaximoLocal(Poligono polig, int& minimoLocal, int& maximoLocal) {
-    
-    int n = polig.getNVertices();
-
-    for (int i = 0; i < n; i++) {
-        int ant = (i + n - 1) % n;
-        int prox = (i + 1) % n;
-
-        Ponto anterior = polig.getVertice(ant);
-        Ponto proximo = polig.getVertice(prox);
-        Ponto atual = polig.getVertice(i);
-
-        if (atual.y < anterior.y && atual.y < proximo.y) {
-            minimoLocal = atual.y;
-        }
-
-        if (atual.y > anterior.y && atual.y > proximo.y) {
-            maximoLocal = atual.y;
-        }
-    }
-}
-
-int Voronoi::TaDentroConcavo(Ponto p){
+int Voronoi::TaDentroConcavo(Ponto p)
+{
     Ponto Dir(-1, 0);
     Ponto teste = p + Dir * (1000); // a partir do ponto reta pra esquerda pra analise
-    // teste.imprime();
-    //q1 e q2 ? de quem? pegar poligono certo
 
-    // metodo separado?
     // envelopes que cruzem a linha horizontal tracada
     Ponto aux;
     vector<int> envelopesParaAnalise;
-    for (int i=0; i>-1000; i--) {
+    for (int i = 0; i > -1000; i--)
+    {
         aux = Ponto(i + p.x, p.y, 0);
-
         vector<int> envelopesNoPonto = getEnvelopesInterseccao(aux);
-        if (envelopesNoPonto.size() == 0) {
-            break;
-        }
-        if (envelopesNoPonto.size() == 1) {
-            return envelopesNoPonto[0]; // se tem so um, ta bem na ponta, a gente ja sabe qual q é
-        }
-
-        for (int j=0; j<envelopesNoPonto.size(); j++) {
-            if (!exists(envelopesParaAnalise, envelopesNoPonto[j])) {
+        for (int j = 0; j < envelopesNoPonto.size(); j++)
+        {
+            if (!exists(envelopesParaAnalise, envelopesNoPonto[j]))
+            {
                 envelopesParaAnalise.push_back(envelopesNoPonto[j]);
             }
         }
     }
 
-    // metodo separado?
-    // analisar somente os q o envelope é cruzado pela linha
     int interseccoes;
-    bool taNoMinMax = false
     Ponto p1, p2;
-    for (int i=0; i<envelopesParaAnalise.size(); i++) {
+    cout << "\nenvelopesParaAnalise.size(): " << envelopesParaAnalise.size() << endl;
+    for (int i = 0; i < envelopesParaAnalise.size(); i++)
+    {
+        cout << "envelopesParaAnalise[i]: " << envelopesParaAnalise[i] << endl;
         Poligono polig = Diagrama[envelopesParaAnalise[i]];
         interseccoes = 0;
-
-        int minimoLocal, maximoLocal;
-        encontrarMinimoMaximoLocal(polig, minimoLocal, maximoLocal);
-        if (teste.y == minimoLocal || teste.y == maximoLocal) {
-            taNoMinMax = true;
-        }
-
-        // se o y for o y max ou minlocal, par = dentro, impar = fora
-        //(n + 1) % Vertices.size();
         int n = polig.getNVertices();
-        for (int j=0; j<n; j++) {
+        for (int j = 0; j < n; j++)
+        {
             p1 = polig.getVertice(j);
-            p2 = polig.getVertice((j+1) % n);
+            p2 = polig.getVertice((j + 1) % n);
 
-            if (HaIntersecao(p, teste, p1, p2)) {
+            if (HaInterseccao(p, teste, p1, p2))
+            {
                 interseccoes++;
             }
         }
 
-        if (taNoMinMax) {
-            if (interseccoes % 2 == 0) {
-                return envelopesParaAnalise[i];
-            }
-        } else {
-            if (interseccoes % 2 != 0) {
-                return envelopesParaAnalise[i];
-            }
+        if (interseccoes % 2 != 0)
+        {
+            return envelopesParaAnalise[i];
         }
-
-        // agora qq tem que fazer:
-        // 1 - ir em cada aresta do poligono, e ir passando pra funcao ali de baixo
-        // 2 - se der interseccao, contabilizar em um contador
-        // no final da analise do poligono inteiro, tem que ver se o contador é par ou impar
-        // dependendo sempre do min e max local (a logica pode mudar)
-        // caso for impar ou par (dependendo da logica) ja retorna o poligono que se encontra para parar a analise
     }
-
-
-    // HaIntersecao(p1, teste, q1, q2);
+    return -1;
 }
 
-// k e l = uma reta
-// m e n = outra reta
-// s e t = parametros da intersecção, nao precisa enviar
-int Voronoi::intersec2d (Ponto k, Ponto l, Ponto m, Ponto n, double &s, double &t) //dava pra colocar isos dentro de HaInterseccao
+int Voronoi::intersec2d(Ponto k, Ponto l, Ponto m, Ponto n, double &s, double &t) // dava pra colocar isos dentro de HaInterseccao
 {
     double det = (n.x - m.x) * (l.y - k.y) - (n.y - m.y) * (l.x - k.x);
-    if (det == 0.0) return 0 ; // não há intersecção
-    s = ((n.x - m.x) * (m.y - k.y) - (n.y - m.y) * (m.x - k.x))/ det ;
-    t = ((l.x - k.x) * (m.y - k.y) - (l.y - k.y) * (m.x - k.x))/ det ;
+    if (det == 0.0)
+        return 0; // não há intersecção
+    s = ((n.x - m.x) * (m.y - k.y) - (n.y - m.y) * (m.x - k.x)) / det;
+    t = ((l.x - k.x) * (m.y - k.y) - (l.y - k.y) * (m.x - k.x)) / det;
     return 1; // há intersecção
 }
 
-
-void Voronoi::imprimeNumerosEnvelopes(vector<int> envelopesClicados) {
-    for (int i=0; i<envelopesClicados.size(); i++) {
+void Voronoi::imprimeNumerosEnvelopes(vector<int> envelopesClicados)
+{
+    for (int i = 0; i < envelopesClicados.size(); i++)
+    {
         cout << envelopesClicados[i] << endl;
     }
 } // da pra tirar esses dos se for o caso
 
-void Voronoi::imprimeEnvelopes() {
-    for (int i=0; i<envelopes.size(); i++) {
+void Voronoi::imprimeEnvelopes()
+{
+    for (int i = 0; i < envelopes.size(); i++)
+    {
         envelopes[i].imprime();
     }
 }
-
 
 // convexo: precisa salvas as arestas, pegar as arestas de cada poligono da lista pegada pelo metodo acima
 //          ai dps tem que ver se o ponto ta dentro do poligono vendo se ta no mesmo lado em relacao a todas as arestas do poligono (prod vetorial???)
@@ -325,6 +278,4 @@ void Voronoi::imprimeEnvelopes() {
 
 // vizinhos: ????
 
-
 // TEM QUE SALVAR AS ARESTAS!!!!! -- salvar as duplas de pontos, ja tem o metodo pra pegar esses pontos
-
