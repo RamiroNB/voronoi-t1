@@ -53,6 +53,8 @@ bool desenha = false;
 bool FoiClicado = false;
 
 float angulo = 0.0;
+int poligono = -1;
+int novoPoligono = -1;
 
 // **********************************************************************
 //
@@ -81,6 +83,26 @@ void ImprimeNumeracaoDosVertices(Poligono &P)
         sprintf(msg, "%d", i);
         printString(msg, aux.x, aux.y);
     }
+}
+// **********************************************************************
+//
+// **********************************************************************
+void ImprimeNroDoPoligono(Poligono P,int n)
+{
+    char msg[10];
+    sprintf(msg,"%d",n);
+    Ponto Soma, A;
+
+    for (int i=0;i<P.getNVertices();i++)
+    {
+        A = P.getVertice(i);
+        Soma = Soma + A;
+    }
+
+    double div = 1.0/P.getNVertices();
+    Soma = Soma * div;
+    printString(msg,Soma.x, Soma.y);
+
 }
 // **********************************************************************
 //
@@ -190,6 +212,7 @@ void desenhaTriangulo()
     // glVertex2f(p1.x + 1, p1.y);
     // glVertex2f(p1.x + 0.5, p1.y + 1);
     // glEnd();
+    glColor3f(1, 1, 1); // R, G, B  [0..1]
     glPointSize(5);
     glBegin(GL_POINTS);
         glVertex3f(p1.x, p1.y, p1.z);
@@ -266,6 +289,7 @@ void display(void)
         defineCor(CoresDosPoligonos[i]);
         P = Voro.getPoligono(i);
         P.pintaPoligono();
+        ImprimeNroDoPoligono(P, i);
     }
     glColor3f(0, 0, 0);
     for (int i = 0; i < Voro.getNPoligonos(); i++)
@@ -339,8 +363,11 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'w':
         p1.y += 0.1;
-        cout << "\n\nConvexo: " << Voro.TaDentroConvexo(p1) << endl;
-        cout << "\n\nConcavo: " << Voro.TaDentroConcavo(p1) << endl;
+        novoPoligono = Voro.TaDentroConvexo(p1); //como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
+        if (novoPoligono != poligono) {
+            cout << "\n\nConvexo: " << novoPoligono << endl;
+            cout << "\n\nConcavo: " << Voro.TaDentroConcavo(p1) << endl;
+        }
         break;
     case 'a':
         p1.x -= 0.1;
