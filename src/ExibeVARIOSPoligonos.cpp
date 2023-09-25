@@ -56,6 +56,9 @@ float angulo = 0.0;
 int poligono = -1;
 int novoPoligono = -1;
 
+int contadorProdVetorial;
+int contadorHaInterseccao;
+
 // **********************************************************************
 //
 // **********************************************************************
@@ -135,7 +138,7 @@ void init()
     Voro.LePoligonos("ListaDePoligonos-V2.txt");
     Voro.obtemLimites(Min, Max);
     // aqui o metodo dos vizinhos
-    // Voro.obtemVizinhosDasArestas();
+    Voro.obtemVizinhosDasArestas();
     Min.imprime("Minimo:", "\n");
     Max.imprime("Maximo:", "\n");
 
@@ -363,26 +366,47 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'w':
         p1.y += 0.1;
-        novoPoligono = Voro.TaDentroConvexo(p1); //como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
+        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); //como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
         if (novoPoligono != poligono) {
-            cout << "\n\nConvexo: " << novoPoligono << endl;
-            cout << "\n\nConcavo: " << Voro.TaDentroConcavo(p1) << endl;
+            cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
+            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
+            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao) << endl;
+            cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
+            poligono = novoPoligono;
         }
         break;
     case 'a':
         p1.x -= 0.1;
-        cout << "\n\nConvexo: " << Voro.TaDentroConvexo(p1) << endl;
-        cout << "\n\nConcavo: " << Voro.TaDentroConcavo(p1) << endl;
+        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); //como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
+        if (novoPoligono != poligono) {
+            cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
+            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
+            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao) << endl;
+            cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
+            poligono = novoPoligono;
+        }
         break;
     case 's':
         p1.y -= 0.1;
-        cout << "\n\nConvexo: " << Voro.TaDentroConvexo(p1) << endl;
-        cout << "\n\nConcavo: " << Voro.TaDentroConcavo(p1) << endl;
+        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); //como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
+        if (novoPoligono != poligono) {
+            cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
+            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
+            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao) << endl;
+            cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
+            poligono = novoPoligono;
+        }
         break;
     case 'd':
         p1.x += 0.1;
-        cout << "\n\nConvexo: " << Voro.TaDentroConvexo(p1) << endl;
-        cout << "\n\nConcavo: " << Voro.TaDentroConcavo(p1) << endl;
+        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); //como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
+        if (novoPoligono != poligono) {
+            cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
+            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
+            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao) << endl;
+            cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
+            poligono = novoPoligono;
+        }
         break;
     default:
         break;

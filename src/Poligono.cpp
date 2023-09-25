@@ -136,3 +136,11 @@ void Poligono::imprimeVertices()
     for (int i = 0; i < Vertices.size(); i++)
         Vertices[i].imprime("", "\n");
 }
+
+void Poligono::addVizinho(int p){
+    vizinhos.push_back(p);
+}
+
+vector<int> Poligono::getVizinhos() {
+    return vizinhos;
+}

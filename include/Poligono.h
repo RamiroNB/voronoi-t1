@@ -19,6 +19,7 @@ class Poligono
 {
     vector<Ponto> Vertices;
     Ponto Min, Max;
+    vector<int> vizinhos;
 
 public:
     Poligono();
@@ -37,4 +38,6 @@ public:
     void getAresta(int i, Ponto &P1, Ponto &P2);
     void alteraVertice(int i, Ponto P);
     void imprimeVertices();
+    void addVizinho(int p);
+    vector<int> getVizinhos();
 };
