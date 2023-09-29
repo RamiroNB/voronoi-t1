@@ -38,11 +38,11 @@ public:
     vector<int> getEnvelopesInterseccao(Ponto p);
     double ProdVetorial(Ponto& p1, Ponto& p2);
     int TaDentroConvexo(Ponto P, int& contador);
-    int TaDentroConcavo(Ponto p, int& contador);
+    int TaDentroConcavo(Ponto p, int& contador, Ponto& fim);
     void imprimeNumerosEnvelopes(vector<int> envelopesClicados);
     void imprimeEnvelopes();
     void obtemVizinhosDasArestas();
-
+    int vizinhosTeste(int poligono, Ponto p, int &contador);
 };
 
 #endif /* DiagramaVoronoi_h */

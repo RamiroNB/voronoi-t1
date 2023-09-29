@@ -155,7 +155,6 @@ int Voronoi::TaDentroConvexo(Ponto p, int& contador) {
         }
 
         if (dentro) {
-            // cout << "ContadorProdVetorial: " << contadorProdVetorial << endl;
             contador = contadorProdVetorial;
             return envelopesClicados[i];
         }
@@ -172,10 +171,11 @@ bool exists(vector<int> vetor, int n) {
     return false;
 }
 
-int Voronoi::TaDentroConcavo(Ponto p, int& contador){
+int Voronoi::TaDentroConcavo(Ponto p, int& contador, Ponto& fim){
     contadorHaInterseccao = 0;
     Ponto Dir(-1, 0);
     Ponto teste = p + Dir * (1000);
+    fim = teste;
 
     Ponto aux;
     vector<int> envelopesParaAnalise;
@@ -198,11 +198,6 @@ int Voronoi::TaDentroConcavo(Ponto p, int& contador){
 
     if (envelopesParaAnalise.size() == 1) {
         contador = contadorHaInterseccao;
-        // vector<int> v;
-        // v = Diagrama[envelopesParaAnalise[0]].getVizinhos();
-        // for(int j = 0; j<v.size();j++ ){
-        //     cout << "Vizinhos:\n: " << v[j] << endl;
-        // }
         return envelopesParaAnalise[0];
     }
 
@@ -224,16 +219,7 @@ int Voronoi::TaDentroConcavo(Ponto p, int& contador){
         }
 
         if (interseccoes % 2 != 0) {
-            // cout << "Contador de HaInterseccao: " << contadorHaInterseccao << endl;
             contador = contadorHaInterseccao;
-            //testando
-            // vector<int> v;
-            // v = polig.getVizinhos();
-            // cout <<"N vizinhos:"<< v.size() << endl;
-            // for(int j = 0; j<v.size();j++ ){
-            //     cout << "Vizinhos:\n: " << v[j] << endl;
-            // }
-            // testando
             return envelopesParaAnalise[i];
         }
 
@@ -260,11 +246,11 @@ void Voronoi::obtemVizinhosDasArestas() {
         for (int a=0; a<poligonoAtual.getNVertices(); a++) {
             Ponto p1, p2;
             poligonoAtual.getAresta(a, p1, p2);
+            adicionou = false;
             for (int p=0; p<qtdDePoligonos; p++) {
                 if (p != i) {
                     Poligono poligonoVizinho = Diagrama[p];
                     for (int e=0; e<poligonoVizinho.getNVertices(); e++) {
-                        adicionou = false;
                         Ponto p3, p4;
                         poligonoVizinho.getAresta(e, p3, p4);
                         if (p1.x == p4.x && p1.y == p4.y && p2.x == p3.x && p2.y == p3.y) {
@@ -274,33 +260,51 @@ void Voronoi::obtemVizinhosDasArestas() {
                         }
                     }
                 }
-                if (!adicionou) {
-                    poligonoAtual.addVizinho(-1);
-                }
+            }
+            if (!adicionou) {
+                Diagrama[i].addVizinho(-1);
             }
         }
     }
 }
 
-void Voronoi::vizinhosTeste(Ponto p) {
-//     // tem a lista de vizinhos poligono p
-//     //  tem o poligono p
-//     // pra cada aresta
-
-//     // produto vetorial = faz com todas as arestas do poligono p,o mais proximo de 0 é o que tu ta cruzando.
-//     // se for fazer o teste depois de ter cruzado = testa com todos os vizinhos
-//     // se for fazer o teste antes de cruzar = testa com as arestas do poligono p
-//     // assim sabe qual aresta que tu ta cruzando, e assim automaticamente sabe qual o poligono (numero da aresta corresponde ao indice da lista de vizinhos, ou seja, a posicao da aresta tem o poligono que tu ta)
-//     // vector<int> vizinhos = p.getVizinhos();
-
-//     //quer o poligono atual
-
-//     //qual aresta p cruzou? 
-        
-    for (int i=0; i<qtdDePoligonos; i++) {
-        Poligono polig = Diagrama[i];
-        
+int Voronoi::vizinhosTeste(int poligono, Ponto p, int &contador) {
+    if (poligono == -1) {
+        return -1;
+    }
+    contador = 0;
+    Poligono polig = Diagrama[poligono];
+    vector<int> vizinhos = polig.getVizinhos(); 
+    for (int i=0; i<vizinhos.size();i++) {
+        cout << vizinhos[i] << endl;
     }
 
+    vector<double> produtos;
+    int positivos = 0, negativos = 0;
+    bool procuraPositivo;
+
+    Ponto p1, p2, vec1, vec2;
+    for (int i=0; i<polig.getNVertices(); i++) {
+        polig.getAresta(i, p1, p2);
+        vec1 = Ponto(p2.x - p1.x, p2.y - p1.y, 0);
+        vec2 = Ponto(p.x - p1.x, p.y - p1.y, 0);
+        contador++;
+        double prod = ProdVetorial(vec1, vec2);
+
+        produtos.push_back(prod);
+        if (prod < 0) negativos++;
+        else positivos++;
+    }
+
+    if (positivos == 1) procuraPositivo = true;
+    else procuraPositivo = false;
+
+    for (int i=0; i<produtos.size(); i++) {
+        if (procuraPositivo) {
+            if (produtos[i] > 0) return vizinhos[i];
+        } else {
+            if (produtos[i] < 0) return vizinhos[i];
+        }
+    }
 }
 
