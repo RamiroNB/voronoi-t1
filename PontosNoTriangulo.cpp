@@ -352,7 +352,6 @@ void Mouse(int button, int state, int x, int y)
         return;
     if (button != GLUT_RIGHT_BUTTON)
         return;
-    cout << "Botao da direita! ";
 
     glGetIntegerv(GL_VIEWPORT, viewport);
     y = viewport[3] - y;

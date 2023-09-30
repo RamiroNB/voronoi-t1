@@ -38,7 +38,7 @@ public:
     vector<int> getEnvelopesInterseccao(Ponto p);
     double ProdVetorial(Ponto& p1, Ponto& p2);
     int TaDentroConvexo(Ponto P, int& contador);
-    int TaDentroConcavo(Ponto p, int& contador, Ponto& fim);
+    int TaDentroConcavo(Ponto p, int& contador, Ponto& fim, vector<int>& envelopesParaAnalise);
     void imprimeNumerosEnvelopes(vector<int> envelopesClicados);
     void imprimeEnvelopes();
     void obtemVizinhosDasArestas();

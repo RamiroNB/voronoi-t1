@@ -64,6 +64,9 @@ int contadorHaInterseccao;
 
 bool envelopeAparece = false;
 bool linhaAparece = false;
+vector<int> ec;
+vector<int> viz;
+vector<int> envelopesParaAnalise;
 
 // **********************************************************************
 //
@@ -157,7 +160,7 @@ void init()
     if (Voro.getNPoligonos() == 19) {
         passo = 0.1;
     } else if (Voro.getNPoligonos() == 100) {
-        passo = 0.5;
+        passo = 0.2;
     } else {
         passo = 0.7;
     }
@@ -195,9 +198,9 @@ void animate()
     }
     if (TempoTotal > 50.0)
     {
-        cout << "Tempo Acumulado: " << TempoTotal << " segundos. ";
-        cout << "Nros de Frames sem desenho: " << nFrames << endl;
-        cout << "FPS(sem desenho): " << nFrames / TempoTotal << endl;
+        // cout << "Tempo Acumulado: " << TempoTotal << " segundos. ";
+        // cout << "Nros de Frames sem desenho: " << nFrames << endl;
+        // cout << "FPS(sem desenho): " << nFrames / TempoTotal << endl;
         TempoTotal = 0;
         nFrames = 0;
     }
@@ -340,6 +343,18 @@ void display(void)
     if (poligono != -1) 
         Voro.getPoligono(poligono).pintaPoligono();
 
+    if (envelopeAparece) {
+        glColor3f(1,1,1);
+        for (int i=0; i<Voro.envelopes.size(); i++) {
+            Envelope e = Voro.envelopes[i];
+            e.Desenha();
+        }
+    }
+    if (linhaAparece) {
+        glColor3f(0, 0, 0); // R, G, B  [0..1]
+        DesenhaLinha(p1, fim);
+    } 
+
     glColor3f(1, 0, 0); // R, G, B  [0..1]
     desenhaTriangulo();
 
@@ -391,7 +406,7 @@ void keyboard(unsigned char key, int x, int y)
             cout << "------------------------------" << endl;
             cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
             cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
-            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim) << endl;
+            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim, envelopesParaAnalise) << endl;
             cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
             cout << "\n\nVizinhos:\nPoligono: " << Voro.vizinhosTeste(poligono, p1, contadorProdVetorialTres) << endl;
             cout << "Contador de Produto Vetorial: " << contadorProdVetorialTres << endl;
@@ -405,7 +420,7 @@ void keyboard(unsigned char key, int x, int y)
             cout << "------------------------------" << endl;
             cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
             cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
-            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim) << endl;
+            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim, envelopesParaAnalise) << endl;
             cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
             cout << "\n\nVizinhos:\nPoligono: " << Voro.vizinhosTeste(poligono, p1, contadorProdVetorialTres) << endl;
             cout << "Contador de Produto Vetorial: " << contadorProdVetorialTres << endl;
@@ -419,7 +434,7 @@ void keyboard(unsigned char key, int x, int y)
             cout << "------------------------------" << endl;
             cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
             cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
-            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim) << endl;
+            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim, envelopesParaAnalise) << endl;
             cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
             cout << "\n\nVizinhos:\nPoligono: " << Voro.vizinhosTeste(poligono, p1, contadorProdVetorialTres) << endl;
             cout << "Contador de Produto Vetorial: " << contadorProdVetorialTres << endl;
@@ -433,7 +448,7 @@ void keyboard(unsigned char key, int x, int y)
             cout << "------------------------------" << endl;
             cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
             cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
-            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim) << endl;
+            cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim, envelopesParaAnalise) << endl;
             cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
             cout << "\n\nVizinhos:\nPoligono: " << Voro.vizinhosTeste(poligono, p1, contadorProdVetorialTres) << endl;
             cout << "Contador de Produto Vetorial: " << contadorProdVetorialTres << endl;
@@ -441,28 +456,30 @@ void keyboard(unsigned char key, int x, int y)
         }
         break;
     case 'e':
-        if (envelopeAparece) {
-            glColor3f(1,1,1);
-            for (int i=0; i<Voro.envelopes.size(); i++) {
-                Envelope e = Voro.envelopes[i];
-                e.imprime();
-                e.Desenha();
-            }
-        
-            cout << "desenha envelope" << endl;
-        }
         envelopeAparece = !envelopeAparece;
-        cout << envelopeAparece << endl;
         break;
     case 'l':
-        if (linhaAparece) {
-            fim.imprime();
-            glColor3f(0, 0, 0); // R, G, B  [0..1]
-            DesenhaLinha(p1, fim);
-            cout << "desenha linha" << endl;
-        } 
         linhaAparece = !linhaAparece;
-        cout << linhaAparece << endl;
+        break;
+    case 'i':
+        ec = Voro.getEnvelopesInterseccao(p1);
+        cout << "ENVELOPES EM QUE O PONTO SE ENCONTRA:\n";
+        for (int i=0; i<ec.size(); i++) {   
+                cout << ec[i] << endl;
+        }
+        break;
+    case 'v': 
+        viz = Voro.getPoligono(poligono).getVizinhos();
+        cout << "VIZINHOS DO POLIGONO ATUAL:\n";
+        for (int i=0; i<viz.size(); i++) {
+            cout << viz[i] << endl;
+        }
+        break;  
+    case 'p':
+        cout << "ENVELOPES ONDE HÁ INTERSECCAO DA LINHA:\n";
+        for (int i=0; i<envelopesParaAnalise.size(); i++) {
+            cout << envelopesParaAnalise[i] << endl;
+        }
         break;
     default:
         break;
@@ -504,8 +521,6 @@ void Mouse(int button, int state, int x, int y)
         return;
     if (button != GLUT_LEFT_BUTTON)
         return;
-    cout << "Botao da Esquerda! ";
-
     glGetIntegerv(GL_VIEWPORT, viewport);
     y = viewport[3] - y;
     wy = y;
@@ -514,7 +529,7 @@ void Mouse(int button, int state, int x, int y)
     glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &wz);
     gluUnProject(wx, wy, wz, modelview, projection, viewport, &ox, &oy, &oz);
     PontoClicado = Ponto(ox, oy, oz);
-    PontoClicado.imprime("- Ponto no universo: ", "\n");
+    // PontoClicado.imprime("- Ponto no universo: ", "\n");
     // cout << "\n\nPoligono: " << Voro.TaDentroConvexo(PontoClicado) << endl;
     // cout << "\n\nPoligono: " << Voro.TaDentroConcavo(PontoClicado) << endl;
 

@@ -341,7 +341,6 @@ void Mouse(int button, int state, int x, int y)
         return;
     if (button != GLUT_RIGHT_BUTTON)
         return;
-    cout << "Botao da direita! ";
 
     glGetIntegerv(GL_VIEWPORT, viewport);
     y = viewport[3] - y;
@@ -351,7 +350,6 @@ void Mouse(int button, int state, int x, int y)
     glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &wz);
     gluUnProject(wx, wy, wz, modelview, projection, viewport, &ox, &oy, &oz);
     PontoClicado = Ponto(ox, oy, oz);
-    PontoClicado.imprime("- Ponto no universo: ", "\n");
     FoiClicado = true;
 }
 

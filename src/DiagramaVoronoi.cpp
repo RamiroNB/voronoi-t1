@@ -171,17 +171,17 @@ bool exists(vector<int> vetor, int n) {
     return false;
 }
 
-int Voronoi::TaDentroConcavo(Ponto p, int& contador, Ponto& fim){
+int Voronoi::TaDentroConcavo(Ponto p, int& contador, Ponto& fim, vector<int>& envelopesParaAnalise) {
+    envelopesParaAnalise.clear();
     contadorHaInterseccao = 0;
     Ponto Dir(-1, 0);
     Ponto teste = p + Dir * (1000);
     fim = teste;
 
     Ponto aux;
-    vector<int> envelopesParaAnalise;
     vector<int> envelopesNoPonto;
     for (double i=0; i<100; i+=0.1) {
-        aux = Ponto(p.x - i, p.y, 0);
+        aux = Ponto((p.x - i), p.y, 0);
 
         envelopesNoPonto = getEnvelopesInterseccao(aux);
         if (envelopesNoPonto.size() == 0) {
@@ -275,9 +275,9 @@ int Voronoi::vizinhosTeste(int poligono, Ponto p, int &contador) {
     contador = 0;
     Poligono polig = Diagrama[poligono];
     vector<int> vizinhos = polig.getVizinhos(); 
-    for (int i=0; i<vizinhos.size();i++) {
-        cout << vizinhos[i] << endl;
-    }
+    // for (int i=0; i<vizinhos.size();i++) {
+    //     cout << vizinhos[i] << endl;
+    // }
 
     vector<double> produtos;
     int positivos = 0, negativos = 0;
