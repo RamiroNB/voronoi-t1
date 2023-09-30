@@ -99,22 +99,21 @@ void ImprimeNumeracaoDosVertices(Poligono &P)
 // **********************************************************************
 //
 // **********************************************************************
-void ImprimeNroDoPoligono(Poligono P,int n)
+void ImprimeNroDoPoligono(Poligono P, int n)
 {
     char msg[10];
-    sprintf(msg,"%d",n);
+    sprintf(msg, "%d", n);
     Ponto Soma, A;
 
-    for (int i=0;i<P.getNVertices();i++)
+    for (int i = 0; i < P.getNVertices(); i++)
     {
         A = P.getVertice(i);
         Soma = Soma + A;
     }
 
-    double div = 1.0/P.getNVertices();
+    double div = 1.0 / P.getNVertices();
     Soma = Soma * div;
-    printString(msg,Soma.x, Soma.y);
-
+    printString(msg, Soma.x, Soma.y);
 }
 // **********************************************************************
 //
@@ -145,7 +144,7 @@ void init()
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
 
     // Voro.LePoligonos("ListaDePoligonos-V2.txt");
-    Voro.LePoligonos("500-poligonos.txt");
+    Voro.LePoligonos("19-poligonos.txt");
     Voro.obtemLimites(Min, Max);
     // aqui o metodo dos vizinhos
     Voro.obtemVizinhosDasArestas();
@@ -157,11 +156,16 @@ void init()
     for (int i = 0; i < Voro.getNPoligonos(); i++)
         CoresDosPoligonos[i] = i % 60; // rand()%80;
 
-    if (Voro.getNPoligonos() == 19) {
+    if (Voro.getNPoligonos() == 19)
+    {
         passo = 0.1;
-    } else if (Voro.getNPoligonos() == 100) {
+    }
+    else if (Voro.getNPoligonos() == 100)
+    {
         passo = 0.2;
-    } else {
+    }
+    else
+    {
         passo = 0.7;
     }
 
@@ -237,7 +241,7 @@ void desenhaTriangulo()
     glColor3f(1, 1, 1); // R, G, B  [0..1]
     glPointSize(5);
     glBegin(GL_POINTS);
-        glVertex3f(p1.x, p1.y, p1.z);
+    glVertex3f(p1.x, p1.y, p1.z);
     glEnd();
 }
 // **********************************************************************
@@ -340,24 +344,26 @@ void display(void)
     // glColor3f(1,0,0); // R, G, B  [0..1]
     // DesenhaLinha(Mapa.getVertice(0), Ponto(Min.x, Max.y));
     defineCor(14);
-    if (poligono != -1) 
+    if (poligono != -1)
         Voro.getPoligono(poligono).pintaPoligono();
 
-    if (envelopeAparece) {
-        glColor3f(1,1,1);
-        for (int i=0; i<Voro.envelopes.size(); i++) {
+    if (envelopeAparece)
+    {
+        glColor3f(1, 1, 1);
+        for (int i = 0; i < Voro.envelopes.size(); i++)
+        {
             Envelope e = Voro.envelopes[i];
             e.Desenha();
         }
     }
-    if (linhaAparece) {
+    if (linhaAparece)
+    {
         glColor3f(0, 0, 0); // R, G, B  [0..1]
         DesenhaLinha(p1, fim);
-    } 
+    }
 
     glColor3f(1, 0, 0); // R, G, B  [0..1]
     desenhaTriangulo();
-
 
     glutSwapBuffers();
 }
@@ -383,7 +389,7 @@ void ContaTempo(double tempo)
         }
     }
 }
-// **********************************************************************   
+// **********************************************************************
 //  void keyboard ( unsigned char key, int x, int y )
 // **********************************************************************
 void keyboard(unsigned char key, int x, int y)
@@ -401,11 +407,12 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'w':
         p1.y += passo;
-        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); //como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
-        if (novoPoligono != poligono) {
+        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); // como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
+        if (novoPoligono != poligono)
+        {
             cout << "------------------------------" << endl;
             cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
-            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
+            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl;
             cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim, envelopesParaAnalise) << endl;
             cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
             cout << "\n\nVizinhos:\nPoligono: " << Voro.vizinhosTeste(poligono, p1, contadorProdVetorialTres) << endl;
@@ -415,11 +422,12 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'a':
         p1.x -= passo;
-        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); //como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
-        if (novoPoligono != poligono) {
+        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); // como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
+        if (novoPoligono != poligono)
+        {
             cout << "------------------------------" << endl;
             cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
-            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
+            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl;
             cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim, envelopesParaAnalise) << endl;
             cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
             cout << "\n\nVizinhos:\nPoligono: " << Voro.vizinhosTeste(poligono, p1, contadorProdVetorialTres) << endl;
@@ -429,11 +437,12 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 's':
         p1.y -= passo;
-        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); //como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
-        if (novoPoligono != poligono) {
+        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); // como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
+        if (novoPoligono != poligono)
+        {
             cout << "------------------------------" << endl;
             cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
-            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
+            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl;
             cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim, envelopesParaAnalise) << endl;
             cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
             cout << "\n\nVizinhos:\nPoligono: " << Voro.vizinhosTeste(poligono, p1, contadorProdVetorialTres) << endl;
@@ -443,11 +452,12 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'd':
         p1.x += passo;
-        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); //como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
-        if (novoPoligono != poligono) {
+        novoPoligono = Voro.TaDentroConvexo(p1, contadorProdVetorial); // como fazer em relacao aos prints dos contadores? -- getContador e printar aqui fora
+        if (novoPoligono != poligono)
+        {
             cout << "------------------------------" << endl;
             cout << "\n\nConvexo:\nPoligono: " << novoPoligono << endl;
-            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl; 
+            cout << "Contador de Produto Vetorial: " << contadorProdVetorial << endl;
             cout << "\n\nConcavo:\nPoligono: " << Voro.TaDentroConcavo(p1, contadorHaInterseccao, fim, envelopesParaAnalise) << endl;
             cout << "Contador de Ha Interseccao: " << contadorHaInterseccao << endl;
             cout << "\n\nVizinhos:\nPoligono: " << Voro.vizinhosTeste(poligono, p1, contadorProdVetorialTres) << endl;
@@ -464,20 +474,23 @@ void keyboard(unsigned char key, int x, int y)
     case 'i':
         ec = Voro.getEnvelopesInterseccao(p1);
         cout << "ENVELOPES EM QUE O PONTO SE ENCONTRA:\n";
-        for (int i=0; i<ec.size(); i++) {   
-                cout << ec[i] << endl;
+        for (int i = 0; i < ec.size(); i++)
+        {
+            cout << ec[i] << endl;
         }
         break;
-    case 'v': 
+    case 'v':
         viz = Voro.getPoligono(poligono).getVizinhos();
         cout << "VIZINHOS DO POLIGONO ATUAL:\n";
-        for (int i=0; i<viz.size(); i++) {
+        for (int i = 0; i < viz.size(); i++)
+        {
             cout << viz[i] << endl;
         }
-        break;  
+        break;
     case 'p':
         cout << "ENVELOPES ONDE HÁ INTERSECCAO DA LINHA:\n";
-        for (int i=0; i<envelopesParaAnalise.size(); i++) {
+        for (int i = 0; i < envelopesParaAnalise.size(); i++)
+        {
             cout << envelopesParaAnalise[i] << endl;
         }
         break;
